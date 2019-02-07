@@ -1,6 +1,6 @@
 <?php
-session_start();
 session_name('ad-update');
+session_start();
 if(isset($_GET['logout']))
 	$_SESSION=array();
 if(!empty($_SESSION['manager']))
