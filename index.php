@@ -1,6 +1,5 @@
 <?php
-session_name('ad-update');
-session_start();
+require 'ad_update.php';
 if(isset($_GET['logout']))
 	$_SESSION=array();
 if(!empty($_SESSION['manager']))
@@ -15,9 +14,9 @@ $dom->formatOutput=true;
 
 if(isset($_POST['submit']))
 {
-    try {
-        require 'adtools/adtools.class.php';
-        $adtools = new adtools('auth');
+    try
+    {
+        $adtools = new ad_update('auth');
         $adtools->connect_and_bind(null, $_POST['username'] . '@' . $adtools->config['domain'], $_POST['password']);
         $manager=$adtools->find_object($_POST['username'],false,'username',array('dn','displayName'));
         if($manager===false)

@@ -1,6 +1,5 @@
 <?php
-session_start();
-session_name('ad-update');
+require 'ad_update.php';
 if(empty($_SESSION['manager']))
 {
 	header('Location: index.php');
@@ -20,28 +19,24 @@ if(empty($_SESSION['manager']))
 <?php
 	$fields=array('displayname'=>'Navn','samaccountname'=>'Brukernavn','title'=>'Tittel','telephonenumber'=>'Telefon','mobile'=>'Mobil','physicaldeliveryofficename'=>'Lokasjon','manager'=>'Leder');
 	$editable_fields=array('title','telephonenumber','mobile','physicaldeliveryofficename');
-	require 'adtools/adtools.class.php';
-	$adtools=new adtools;
+	$ad=new ad_update;
 	require 'DOMDocument_createElement_simple.php';
 	$dom=new DOMDocumentCustom;
-	require '../../lib/logger_class.php';
-	$logger=new logger('ad-update');
 	$body=$dom->createElement_simple('body');
 	$_GET['user']=preg_replace('/[^a-z0-9\-]/i','',$_GET['user']); //Remove invalid characters from user name
-	//$adtools->dn='OU=Adminnett,DC=as-admin,DC=no';
-	if($adtools->connect('edit')!==false)
-	{
-		//$user=$adtools->query(sprintf('(sAMAccountName=%s)',$_GET['user']),$adtools->dn,array_keys($fields));
-		$user=$adtools->find_object($_GET['user'],false,'username',array_keys($fields));
-		if($user===false)
-			$dom->createElement_simple('p',$body,array('class'=>'error'),$adtools->error);
-		elseif(empty($user))
-			$dom->createElement_simple('p',$body,array('class'=>'error'),sprintf('Brukernavn %s finnes ikke',$_GET['user']));
-	}
+
+    try {
+        $ad->connect('edit');
+        $user=$ad->find_object($_GET['user'],false,'username',array_keys($fields));
+    }
+    catch (Exception $e)
+    {
+        $dom->createElement_simple('p',$body,array('class'=>'error'),$e->getMessage());
+    }
+
+    if(empty($user))
+        $dom->createElement_simple('p',$body,array('class'=>'error'),sprintf('Brukernavn %s finnes ikke',$_GET['user']));
 	else
-		$dom->createElement_simple('p',$body,array('class'=>'error'),$adtools->error);
-	
-	if(!empty($user))
 	{
 		$dom->createElement_simple('h2',$body,false,'Endrer '.$user['displayname'][0]);
 
@@ -52,7 +47,7 @@ if(empty($_SESSION['manager']))
 		{
 			if(isset($_POST['submit']))
 			{
-				$logger->writelog($user['dn']);
+				$ad->log->writelog($user['dn']);
 				foreach($fields as $field=>$label)
 				{
 					if($_POST[$field]!=$_POST['original_'.$field])
@@ -63,7 +58,7 @@ if(empty($_SESSION['manager']))
 							$_POST['original_'.$field]='[blank]';
 
 						$logstring=sprintf('%s er endret fra %s til %s',$label,$_POST['original_'.$field],$_POST[$field]);
-						$logger->writelog($_SESSION['manager'].': '.$logstring);
+						$ad->log->writelog($_SESSION['manager'].': '.$logstring);
 
 						//$logger->writelog()
 						//print_r(array($field=>$_POST[$field]));

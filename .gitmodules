@@ -1,3 +1,6 @@
 [submodule "adtools"]
 	path = adtools
 	url = https://github.com/datagutten/adtools.git
+[submodule "logger"]
+	path = logger
+	url = git@github.com:datagutten/logger.git
