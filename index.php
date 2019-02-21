@@ -15,25 +15,25 @@ $dom->formatOutput=true;
 
 if(isset($_POST['submit']))
 {
-	require 'adtools/adtools.class.php';
-	$adtools=new adtools('auth');
-	$status=$adtools->connect_and_bind(false,$_POST['username'].'@'.$adtools->config['domain'],$_POST['password']);
-
-	if($status===false)
-		$error=$adtools->error;
-	else
-	{
-		$manager=$adtools->find_object($_POST['username'],false,'username',array('dn','displayName'));
-		if($manager===false)
-			$error=$adtools->error;
-		else
-		{
-			$_SESSION['manager']=$_POST['username'];
-			$_SESSION['manager_info']=$manager;
-			header('Location: employees.php');
-			die();
-		}
-	}
+    try {
+        require 'adtools/adtools.class.php';
+        $adtools = new adtools('auth');
+        $adtools->connect_and_bind(null, $_POST['username'] . '@' . $adtools->config['domain'], $_POST['password']);
+        $manager=$adtools->find_object($_POST['username'],false,'username',array('dn','displayName'));
+        if($manager===false)
+            $error=$adtools->error;
+        else
+        {
+            $_SESSION['manager']=$_POST['username'];
+            $_SESSION['manager_info']=$manager;
+            header('Location: employees.php');
+            die();
+        }
+    }
+    catch (Exception $e)
+    {
+        $error=$e->getMessage();
+    }
 }
 
 ?>
