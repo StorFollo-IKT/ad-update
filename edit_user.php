@@ -13,7 +13,7 @@ if(empty($_SESSION['manager']))
 <head>
 <meta charset="utf-8">
 <title>Endre bruker</title>
-<link href="askommune.css" rel="stylesheet" type="text/css">
+<link href="static/askommune.css" rel="stylesheet" type="text/css">
 </head>
 
 
