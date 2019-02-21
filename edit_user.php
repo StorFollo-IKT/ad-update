@@ -17,8 +17,6 @@ if(empty($_SESSION['manager']))
 
 
 <?php
-	$fields=array('displayname'=>'Navn','samaccountname'=>'Brukernavn','title'=>'Tittel','telephonenumber'=>'Telefon','mobile'=>'Mobil','physicaldeliveryofficename'=>'Lokasjon','manager'=>'Leder');
-	$editable_fields=array('title','telephonenumber','mobile','physicaldeliveryofficename');
 	$ad=new ad_update;
 	require 'DOMDocument_createElement_simple.php';
 	$dom=new DOMDocumentCustom;
@@ -27,7 +25,7 @@ if(empty($_SESSION['manager']))
 
     try {
         $ad->connect('edit');
-        $user=$ad->find_object($_GET['user'],false,'username',array_keys($fields));
+        $user=$ad->find_object($_GET['user'],false,'username',$ad->fetch_fields);
     }
     catch (Exception $e)
     {
@@ -47,23 +45,33 @@ if(empty($_SESSION['manager']))
 		{
 			if(isset($_POST['submit']))
 			{
+                $update_fields = array_intersect(array_keys($_POST), $ad->editable_fields);
 				$ad->log->writelog($user['dn']);
-				foreach($fields as $field=>$label)
+				foreach($update_fields as $field)
 				{
 					if($_POST[$field]!=$_POST['original_'.$field])
 					{
 						if(empty($_POST[$field]))
-							$_POST[$field]='[blank]';
-						if(empty($_POST['original_'.$field]))
-							$_POST['original_'.$field]='[blank]';
+                        {
+                            $ad->log->writelog('Remove '.$field);
+                            $logstring_to = '[blank]';
+                            ldap_mod_replace($ad->ad,$user['dn'],array($field=>array())); //Update AD
+                        }
+                        else
+                        {
+                            $logstring_to = $_POST[$field];
+                            ldap_mod_replace($ad->ad,$user['dn'],array($field=>$_POST[$field])); //Update AD
+                        }
 
-						$logstring=sprintf('%s er endret fra %s til %s',$label,$_POST['original_'.$field],$_POST[$field]);
-						$ad->log->writelog($_SESSION['manager'].': '.$logstring);
+                        if(empty($_POST['original_'.$field]))
+                            $logstring_from ='[blank]';
+                        else
+                            $logstring_from = $_POST['original_'.$field];
 
-						//$logger->writelog()
-						//print_r(array($field=>$_POST[$field]));
-						//var_dump($user['dn']);
-						ldap_mod_replace($adtools->ad,$user['dn'],array($field=>$_POST[$field])); //Update AD
+                        $label = $ad->field_names[$field];
+                        $logstring=sprintf('%s er endret fra %s til %s',$label, $logstring_from, $logstring_to);
+                        $ad->log->writelog($_SESSION['manager'].': '.$logstring);
+
 						$user[$field][0]=$_POST[$field]; //Show updated value in form
 						$dom->createElement_simple('p',$body,false,$logstring);
 					}
@@ -77,15 +85,28 @@ if(empty($_SESSION['manager']))
 			$dom->createElement_simple('th',$tr,false,'Verdi');
 			//print_r($user);
 
-			foreach($editable_fields as $field) //Show editable fields
+			foreach($ad->editable_fields as $field) //Show editable fields
 			{
 				$tr=$dom->createElement_simple('tr',$table);
-				$dom->createElement_simple('td',$tr,false,$fields[$field]);
+				$dom->createElement_simple('td',$tr,false,$ad->field_names[$field]);
 				$td=$dom->createElement_simple('td',$tr);
 				if(empty($user[$field]))
 					$user[$field][0]='';
-				$input=$dom->createElement_simple('input',$td,array('type'=>'text','name'=>$field,'value'=>$user[$field][0]));
-				$input=$dom->createElement_simple('input',$td,array('type'=>'hidden','name'=>'original_'.$field,'value'=>$user[$field][0]));
+				if((isset($user[$field]['count']) && $user[$field]['count']>1) || isset($ad->multi_value_fields[$field]))
+				{
+                    unset($user[$field]['count']);
+                    foreach($user[$field] as $value)
+                    {
+                        $dom->createElement_simple('span', $td, false, $value);
+                        $dom->createElement_simple('br', $td);
+                    }
+                    $dom->createElement_simple('a', $td, array('href'=>sprintf('multi_value.php?user=%s&field=%s', $user['samaccountname'][0], $field)), 'Endre');
+                }
+                else
+                {
+					$input=$dom->createElement_simple('input',$td,array('type'=>'text','name'=>$field,'value'=>$user[$field][0]));
+					$input=$dom->createElement_simple('input',$td,array('type'=>'hidden','name'=>'original_'.$field,'value'=>$user[$field][0]));
+				}
 			}
 			$dom->createElement_simple('input',$form,array('type'=>'submit','name'=>'submit','value'=>'Lagre endringer'));
 
