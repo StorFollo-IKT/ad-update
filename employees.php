@@ -3,9 +3,7 @@ session_start();
 session_name('ad-update');
 if(empty($_SESSION['manager']))
 {
-	//trigger_error($_SESSION['manager']);
-	//print_r($_SESSION);
-	header('Location: login.php');
+	header('Location: index.php');
 	die();
 }
 if(isset($_GET['manager']))
@@ -14,10 +12,10 @@ if(isset($_GET['manager']))
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Velg ansatt</title>
-<link href="brukerliste.css" rel="stylesheet" type="text/css">
-<link href="askommune.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <title>Velg ansatt</title>
+    <link href="static/brukerliste.css" rel="stylesheet" type="text/css">
+    <link href="static/askommune.css" rel="stylesheet" type="text/css">
 </head>
 
 <?php
