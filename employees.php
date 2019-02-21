@@ -1,6 +1,6 @@
 <?php
-session_start();
-session_name('ad-update');
+require 'ad_update.php';
+
 if(empty($_SESSION['manager']))
 {
 	header('Location: index.php');
@@ -19,29 +19,30 @@ if(isset($_GET['manager']))
 </head>
 
 <?php
-	require 'adtools/adtools.class.php';
-	$adtools=new adtools('edit');
+	$ad=new ad_update('edit');
 	require 'DOMDocument_createElement_simple.php';
 	$dom=new DOMDocumentCustom;
 	$body=$dom->createElement_simple('body');
 	$dom->formatOutput=true;
 
-	$manager=$adtools->query(sprintf('(samAccountName=%s)',$_SESSION['manager']),false,array('dn','displayName'));
+	$manager=$ad->query(sprintf('(samAccountName=%s)',$_SESSION['manager']),false,array('dn','displayName'));
 	$_SESSION['manager_dn']=$manager['dn'];
 	if($manager===false)
-		die($adtools->error);
+		die($ad->error);
 	else
 	{
-		$users=$adtools->query(sprintf('(manager=%s)',$manager['dn']),$base,array('title','telephoneNumber','samaccountname','mobile','employeeid','physicalDeliveryOfficeName','department','givenName','displayName'),false);
-		//print_r($users);
-		if($users===false)
-			$error=$adtools->error;
-		elseif(empty($users))
-			$error=sprintf('Ingen brukere er registrert med %s som leder',$manager['displayname'][0]);
-		
-		if(isset($error))
-			$dom->createElement_simple('p',$body,array('class'=>'error'),$error);
-		else
+        try {
+            $users=$ad->query(sprintf('(manager=%s)',$manager['dn']),false,array_keys($ad->field_names),false);
+            if(empty($users))
+                $error=$dom->createElement_simple('p',$body,array('class'=>'error'),
+                    sprintf('Ingen brukere er registrert med %s som leder',$manager['displayname'][0]));
+        }
+        catch (Exception $e)
+        {
+            $error=$dom->createElement_simple('p',$body,array('class'=>'error'),$e->getMessage());
+        }
+
+		if(!isset($error))
 		{
 			unset($users['count']);
 
@@ -51,7 +52,7 @@ if(isset($_GET['manager']))
 				$ou=preg_replace('/CN=.+?,(OU=.+)/','$1',$user['dn']);
 				$ou=str_replace('\\','',$ou);
 				//var_dump($user['dn']);
-				$fields=array('displayname'=>'Navn','samaccountname'=>'Brukernavn','title'=>'Tittel','telephonenumber'=>'Telefon','mobile'=>'Mobil','physicaldeliveryofficename'=>'Lokasjon');
+
 				if(!isset($tables[$ou]))
 				{
 					$ouname=preg_replace('/OU=(.+?),[A-Z]{2}=.+/','$1',$ou);
@@ -60,14 +61,14 @@ if(isset($_GET['manager']))
 					$tables[$ou]=$dom->createElement_simple('table',$p_tables[$ou],array('border'=>1));
 					$tr=$dom->createElement_simple('tr',$tables[$ou]);
 					//foreach(array('Navn','Tittel','Telefon','Mobil','Lokasjon') as $header)
-					foreach($fields as $header)
+					foreach($ad->field_names as $header)
 					{
 						$dom->createElement_simple('th',$tr,false,$header);
 					}
 					$dom->createElement_simple('td',$tr/*,array('colspan'=>'2')*/); //Empty field above links
 				}
 				$tr=$dom->createElement_simple('tr',$tables[$ou]);
-				foreach(array_keys($fields) as $field)
+				foreach(array_keys($ad->field_names) as $field)
 				{
 					if(empty($user[$field]))
 						$user[$field][0]='';
@@ -88,7 +89,7 @@ if(isset($_GET['manager']))
 	}
 	$p=$dom->createElement_simple('p',$body,false,'Ansatte som har sluttet meldes ut med ');
 	$dom->createElement_simple('a',$p,array('href'=>'https://opplaring.as-admin.no/fagsystemer/agresso/elektronisk-lonnsmelding/#Sluttmelding'),'elektronisk lønnsmelding i agresso.');
-	$dom->createElement_simple('a',$body,array('href'=>'login.php?logout'),'Logg ut');
+	$dom->createElement_simple('a',$body,array('href'=>'index.php?logout'),'Logg ut');
 	echo $dom->saveXML($body);
 ?>
 </html>
