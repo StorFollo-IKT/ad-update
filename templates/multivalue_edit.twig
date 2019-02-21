@@ -1,0 +1,26 @@
+{% extends 'base.twig' %}
+{% block content %}
+    <form method="post" id="form">
+        <table border="1" id="table">
+            <tr>
+                <th>Verdi</th>
+                <th>Endres til</th>
+                <th>Fjern</th>
+            </tr>
+            {% for key,value in values %}
+                <tr>
+                    <td>{{ value }}</td>
+                    <td><input type="text" value="{{ value }}" name="values[{{ key }}]" id="values{{ key }}"/></td>
+                    <td><input type="checkbox" name="remove[{{ key }}]"/></td>
+                </tr>
+            {% endfor %}
+            <tr id="new">
+                <td>&nbsp;</td>
+                <td><input type="text" name="values[]" id="new_input"/></td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+        <input type="submit" value="Lagre"/>
+    </form>
+    <script type="application/javascript" src="static/add_field.js"></script>
+{% endblock %}

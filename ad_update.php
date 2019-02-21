@@ -34,6 +34,10 @@ class ad_update extends adtools
      * @var array Fields with multiple values
      */
     public $multi_value_fields;
+    /**
+     * @var array Fields which should be fethced from A
+     */
+    public $fetch_fields;
 
     /**
      * ad_update constructor.
@@ -58,6 +62,7 @@ class ad_update extends adtools
         $this->field_names = $config['field_names'];
         $this->editable_fields = $config['editable_fields'];
         $this->multi_value_fields = $config['multi_value_fields'];
+        $this->fetch_fields = array_merge(array('manager'), array_keys($this->field_names));
     }
 
     /**
