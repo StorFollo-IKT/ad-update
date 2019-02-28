@@ -8,6 +8,12 @@
 ini_set('display_errors', true);
 session_name('ad-update');
 session_start();
+if(isset($_GET['logout']))
+{
+    $_SESSION=array();
+    header('Location: index.php');
+}
+
 require 'adtools/adtools.class.php';
 require 'vendor/autoload.php';
 require 'logger/logger.class.php';
