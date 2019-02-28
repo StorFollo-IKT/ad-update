@@ -1,0 +1,31 @@
+{% extends 'base.twig' %}
+{% block content %}
+    {% for ou in ou_list %}
+        <h3>{{ ou.name }}</h3>
+        <table border="1">
+
+        <tr>
+        {% for field, name in field_names %}
+            <th>{{ name }}</th>
+        {% endfor %}
+            <th>&nbsp;</th>
+        </tr>
+        {% for user in ou.users %}
+            <tr>
+            {% for field, name in field_names %}
+                {% if not user[field] is defined %}
+                <td>&nbsp;</td>
+                {% else %}
+                    <td class="{{ field }}">
+                    {% for i in 0..user[field]['count']-1 %}
+                        {{ user[field][i] }}<br />
+                    {% endfor %}
+                    </td>
+                {% endif %}
+            {% endfor %}
+                <td><a href="edit_user.php?user={{ user['samaccountname'][0] }}">Endre opplysninger</a></td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
+{% endblock %}

@@ -4,7 +4,7 @@ if(isset($_GET['logout']))
 	$_SESSION=array();
 if(!empty($_SESSION['manager']))
 {
-	header('Location: employees.php');
+	header('Location: user_list.php');
 	die();
 }
 
@@ -25,7 +25,7 @@ if(isset($_POST['submit']))
         {
             $_SESSION['manager']=$_POST['username'];
             $_SESSION['manager_info']=$manager;
-            header('Location: employees.php');
+            header('Location: user_list.php');
             die();
         }
     }

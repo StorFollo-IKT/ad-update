@@ -116,7 +116,7 @@ if(empty($_SESSION['manager']))
 			$dom->createElement_simple('p',$body,false,'Navn endres i agresso.');
 		}
 	}
-	$dom->createElement_simple('a',$body,array('href'=>'employees.php'),'Endre annen bruker');
+	$dom->createElement_simple('a',$body,array('href'=>'user_list.php'),'Endre annen bruker');
 	$dom->createElement_simple('br',$body);
 	$dom->createElement_simple('a',$body,array('href'=>'index.php?logout'),'Logg ut');
 	echo $dom->saveXML($body);
