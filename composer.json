@@ -2,6 +2,7 @@
     "require": {
         "twig/twig": "^2.0",
         "ext-gettext": "*",
-        "ext-ldap": "*"
+        "ext-ldap": "*",
+        "ext-dom": "*"
     }
 }
