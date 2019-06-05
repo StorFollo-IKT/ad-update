@@ -1,8 +1,24 @@
 {
+    "name": "datagutten/ad-update",
+    "description": "Website allowing users in Active Directory to update information for users they are registered as manager for",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "datagutten",
+            "email": "datagutten@datagutten.net"
+        }
+    ],
     "require": {
         "twig/twig": "^2.0",
         "ext-gettext": "*",
         "ext-ldap": "*",
         "ext-dom": "*"
+    },
+    "autoload": {
+        "classmap": [
+            "ad_update.php",
+            "DOMDocument_createElement_simple.php"
+        ]
     }
 }
