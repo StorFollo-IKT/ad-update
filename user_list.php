@@ -16,7 +16,14 @@ if(empty($_SESSION['manager']))
 if(isset($_GET['manager']))
     $_SESSION['manager']=$_GET['manager'];
 
-$manager=$ad->query(sprintf('(samAccountName=%s)',$_SESSION['manager']),false,array('dn','displayName'));
+try {
+    $manager=$ad->query(sprintf('(samAccountName=%s)',$_SESSION['manager']),false,array('dn','displayName'));
+}
+catch (Exception $e)
+{
+    die($ad->render('error.twig', array('error'=> $e->getMessage())));
+}
+
 $_SESSION['manager_dn']=$manager['dn'];
 $title = sprintf('Ansatte registrert med %s som leder',$manager['displayname'][0]);
 
