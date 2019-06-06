@@ -68,17 +68,15 @@ class ad_update extends adtools
 
     /**
      * @param $domain_key
-     * @return bool
      */
     function connect($domain_key)
     {
         try {
-            return parent::connect($domain_key);
+            parent::connect($domain_key);
         }
         catch (Exception $e)
         {
             echo $this->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
-            return false;
         }
     }
 
