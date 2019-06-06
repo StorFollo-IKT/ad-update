@@ -20,7 +20,7 @@ $ad=new ad_update('edit');
 
 $_GET['field'] = strtolower($_GET['field']);
 if(array_search($_GET['field'], $ad->editable_fields)===false)
-    die($ad->twig->render('error.twig', array('error'=>'Ugyldig felt', 'title'=>'Feil')));
+    die($ad->render('error.twig', array('error'=>'Ugyldig felt', 'title'=>'Feil')));
 else
     $field=$_GET['field'];
 
@@ -29,13 +29,12 @@ try {
 }
 catch (Exception $e)
 {
-    var_dump($e->getMessage());
-    echo $ad->twig->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
+    echo $ad->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
 }
 
 
 if($user['manager'][0]!=$_SESSION['manager_dn'])
-    die($ad->twig->render('error.twig', array('error'=>'Du er ikke leder for ansatt', 'title'=>'Feil')));
+    die($ad->render('error.twig', array('error'=>'Du er ikke leder for ansatt', 'title'=>'Feil')));
 
 if(!isset($_GET['field']) || !isset($_GET['user']))
     die();
@@ -68,11 +67,4 @@ if(!empty($_POST))
     header('Location: edit_user.php?user='.$_GET['user']);
 }
 
-
-try {
-    echo $ad->twig->render('multivalue_edit.twig', array('values'=>$user[$field], 'title'=>$title, 'count'=>$count));
-}
-catch (Twig_Error_Runtime $e)
-{
-    echo $e->getMessage();
-}
+echo $ad->render('multivalue_edit.twig', array('values'=>$user[$field], 'title'=>$title, 'count'=>$count));
