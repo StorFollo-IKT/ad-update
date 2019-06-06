@@ -5,7 +5,6 @@
  * Date: 07.02.2019
  * Time: 12:00
  */
-ini_set('display_errors', true);
 session_name('ad-update');
 session_start();
 if(isset($_GET['logout']))
@@ -14,7 +13,6 @@ if(isset($_GET['logout']))
     header('Location: index.php');
 }
 
-require 'adtools/adtools.class.php';
 require 'vendor/autoload.php';
 require 'logger/logger.class.php';
 

@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "datagutten/adtools": ">1.0",
         "twig/twig": ">=2.7",
         "ext-gettext": "*",
         "ext-ldap": "*",
