@@ -44,23 +44,15 @@ if(!empty($users))
         }
         $ou_list[$ou]['users'][] = $user;
     }
-    try
-    {
-        echo $ad->twig->render('user_list.twig', array(
-            'title'=>$title,
-            'ou_list'=>$ou_list,
-            'field_names'=>$ad->field_names));
-    }
-    catch (Twig_Error_Runtime $e)
-    {
-        echo $e;
-    }
 
+    echo $ad->render('user_list.twig', array(
+        'title'=>$title,
+        'ou_list'=>$ou_list,
+        'field_names'=>$ad->field_names));
 }
 else
 {
     if(empty($error))
         $error=sprintf('Ingen brukere er registrert med %s som leder',$manager['displayname'][0]);
-    echo $ad->twig->render('error_logout.twig', array('error'=>$error, 'title'=>'Feil'));
-
+    echo $ad->render('error_logout.twig', array('error'=>$error, 'title'=>'Feil'));
 }
