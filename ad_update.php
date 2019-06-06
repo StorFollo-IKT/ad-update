@@ -48,21 +48,18 @@ class ad_update extends adtools
     /**
      * ad_update constructor.
      * @param string $domain
-     * @throws Twig_Error_Loader
-     * @throws Twig_Error_Runtime
-     * @throws Twig_Error_Syntax
      */
     function __construct($domain = null)
     {
-        $loader = new Twig_Loader_Filesystem(array('templates', 'templates'), __DIR__);
-        $this->twig = new Twig_Environment($loader, array('debug' => true, 'strict_variables' => true));
+        $loader = new Twig\Loader\FilesystemLoader(array('templates', 'templates'), __DIR__);
+        $this->twig = new Twig\Environment($loader, array('strict_variables' => true));
         try {
             parent::__construct($domain);
             $this->log=new logger('ad-update');
         }
         catch (Exception $e)
         {
-            echo $this->twig->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
+            echo $this->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
         }
         $config = require 'config.php';
         $this->field_names = $config['field_names'];
@@ -74,9 +71,6 @@ class ad_update extends adtools
     /**
      * @param $domain_key
      * @return bool
-     * @throws Twig_Error_Loader
-     * @throws Twig_Error_Runtime
-     * @throws Twig_Error_Syntax
      */
     function connect($domain_key)
     {
@@ -85,7 +79,40 @@ class ad_update extends adtools
         }
         catch (Exception $e)
         {
-            echo $this->twig->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
+            echo $this->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
+            return false;
+        }
+    }
+
+    /**
+     * Renders a template.
+     *
+     * @param string $name    The template name
+     * @param array  $context An array of parameters to pass to the template
+     *
+     * @return string The rendered template
+     */
+    public function render($name, $context)
+    {
+        try {
+            return $this->twig->render($name, $context);
+        }
+        catch (\Twig\Error\Error $e) {
+
+            //$trace = sprintf('<pre>%s</pre>', $e->getTraceAsString());
+            $msg = "Error rendering template:\n" . $e->getMessage();
+            try {
+                die($this->twig->render('error.twig', array(
+                        'title'=>'Rendering error',
+                        'error'=>$msg)
+                ));
+            }
+            catch (\Twig\Error\Error $e_e)
+            {
+                $msg = sprintf("Original error: %s\n<pre>%s</pre>\nError rendering error template: %s\n<pre>%s</pre>",
+                    $e->getMessage(), $e->getTraceAsString(), $e_e->getMessage(), $e_e->getTraceAsString());
+                die($msg);
+            }
         }
     }
 }
