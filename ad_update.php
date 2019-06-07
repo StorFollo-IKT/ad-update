@@ -14,7 +14,6 @@ if(isset($_GET['logout']))
 }
 
 require 'vendor/autoload.php';
-require 'logger/logger.class.php';
 
 class ad_update extends adtools
 {
