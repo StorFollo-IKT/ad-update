@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "datagutten/adtools": "dev-master",
+        "datagutten/adtools": "^1.3",
         "datagutten/logger": "^1.0",
         "twig/twig": ">=2.7",
         "ext-gettext": "*",
