@@ -25,7 +25,8 @@ else
     $field=$_GET['field'];
 
 try {
-    $user=$ad->query(sprintf('(samAccountName=%s)',$_GET['user']),false,array('dn','manager', $field));
+    $user = $ad->ldap_query(sprintf('(samAccountName=%s)',$_GET['user']), array(
+        'attributes'=>array('dn','manager', $field)));
 }
 catch (Exception $e)
 {
