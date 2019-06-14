@@ -2,12 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{{ title }}</title>
+    {% if title is defined %}
+        <title>{{ title }}</title>
+    {% endif %}
     <link href="static/brukerliste.css" rel="stylesheet" type="text/css">
     <link href="static/askommune.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h2>{{ title }}</h2>
+{% if title is defined %}
+    <h2>{{ title }}</h2>
+{% endif %}
 {% block content %} {% endblock %}
 </body>
 </html>
