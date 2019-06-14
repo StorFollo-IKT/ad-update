@@ -25,6 +25,8 @@ if(isset($_POST['submit']))
         {
             $_SESSION['manager']=$_POST['username'];
             $_SESSION['manager_info']=$manager;
+            $_SESSION['manager_ou']=adtools_utils::ou($manager['dn']);
+            $_SESSION['user']=$_POST['username']; //Logged in user
             header('Location: user_list.php');
             die();
         }
