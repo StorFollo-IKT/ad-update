@@ -5,7 +5,7 @@
  * Date: 22.02.2019
  * Time: 09:14
  */
-require 'ad_update.php';
+require 'vendor/autoload.php';
 $ad = new ad_update('edit');
 
 if(empty($_SESSION['manager']))

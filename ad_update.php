@@ -5,15 +5,6 @@
  * Date: 07.02.2019
  * Time: 12:00
  */
-session_name('ad-update');
-session_start();
-if(isset($_GET['logout']))
-{
-    $_SESSION=array();
-    header('Location: index.php');
-}
-
-require 'vendor/autoload.php';
 
 class ad_update extends adtools
 {
@@ -48,6 +39,8 @@ class ad_update extends adtools
      */
     function __construct($domain = null)
     {
+        session_name('ad-update');
+        session_start();
         $loader = new Twig\Loader\FilesystemLoader(array('templates', 'templates'), __DIR__);
         $this->twig = new Twig\Environment($loader, array('strict_variables' => true));
         try {

@@ -1,5 +1,6 @@
 <?php
-require 'ad_update.php';
+require 'vendor/autoload.php';
+$ad=new ad_update;
 if(empty($_SESSION['manager']))
 {
 	header('Location: index.php');
