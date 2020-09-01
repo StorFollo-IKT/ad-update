@@ -8,17 +8,13 @@
 require 'vendor/autoload.php';
 $ad = new ad_update('edit');
 $token = $ad->azure->checkToken($_SESSION['token']);
-if(empty($token))
+
+if(empty($token) || empty($_SESSION['manager']))
 {
     header('Location: login_azure.php');
     die();
 }
 
-if(empty($_SESSION['manager']))
-{
-    header('Location: index.php');
-    die();
-}
 if(isset($_GET['manager']))
     $_SESSION['manager']=$_GET['manager'];
 
