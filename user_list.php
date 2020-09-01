@@ -30,7 +30,7 @@ $_SESSION['manager_dn']=$manager['dn'];
 $title = sprintf('Ansatte registrert med %s som leder',$manager['displayname'][0]);
 
 try {
-    $users=$ad->query(sprintf('(manager=%s)',$manager['dn']),false,$ad->fetch_fields,false);
+    $users = $ad->ldap_query(sprintf('(manager=%s)',$manager['dn']), ['single_result'=>false, 'attributes'=>$ad->fetch_fields]);
 }
 catch (Exception $e)
 {
