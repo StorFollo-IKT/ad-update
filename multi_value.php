@@ -5,7 +5,8 @@
  * Date: 30.01.2019
  * Time: 12:26
  */
-require 'ad_update.php';
+require 'vendor/autoload.php';
+$ad=new ad_update('edit');
 
 if(isset($_GET['logout']))
     $_SESSION=array();
@@ -14,9 +15,6 @@ if(empty($_SESSION['manager']))
     header('Location: index.php');
     die();
 }
-
-
-$ad=new ad_update('edit');
 
 $_GET['field'] = strtolower($_GET['field']);
 if(array_search($_GET['field'], $ad->editable_fields)===false)
