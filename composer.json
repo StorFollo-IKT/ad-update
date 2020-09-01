@@ -12,6 +12,7 @@
     "require": {
         "datagutten/adtools": "^1.4.1",
         "datagutten/logger": "^1.0",
+        "thenetworg/oauth2-azure": "^1.4",
         "twig/twig": "^2.7",
         "ext-gettext": "*",
         "ext-ldap": "*",
@@ -21,6 +22,9 @@
         "classmap": [
             "ad_update.php",
             "DOMDocument_createElement_simple.php"
-        ]
+        ],
+        "psr-4": {
+            "datagutten\\ad_update\\": "src"
+        }
     }
 }

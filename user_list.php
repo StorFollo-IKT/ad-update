@@ -7,6 +7,12 @@
  */
 require 'vendor/autoload.php';
 $ad = new ad_update('edit');
+$token = $ad->azure->checkToken($_SESSION['token']);
+if(empty($token))
+{
+    header('Location: login_azure.php');
+    die();
+}
 
 if(empty($_SESSION['manager']))
 {
@@ -17,7 +23,7 @@ if(isset($_GET['manager']))
     $_SESSION['manager']=$_GET['manager'];
 
 try {
-    $manager=$ad->query(sprintf('(samAccountName=%s)',$_SESSION['manager']),false,array('dn','displayName'));
+    $manager = $_SESSION['manager'];
 }
 catch (Exception $e)
 {

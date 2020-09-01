@@ -1,4 +1,7 @@
 <?php
+
+use datagutten\ad_update\azure;
+
 /**
  * Created by PhpStorm.
  * User: abi
@@ -32,6 +35,10 @@ class ad_update extends adtools
      * @var array Fields which should be fethced from A
      */
     public $fetch_fields;
+    /**
+     * @var azure
+     */
+    public $azure;
 
     /**
      * ad_update constructor.
@@ -56,6 +63,8 @@ class ad_update extends adtools
         $this->editable_fields = $config['editable_fields'];
         $this->multi_value_fields = $config['multi_value_fields'];
         $this->fetch_fields = array_merge(array('manager'), array_keys($this->field_names));
+        $this->azure = new azure($config['azure']);
+        $this->azure->adtools = $this;
     }
 
     /**

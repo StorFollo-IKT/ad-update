@@ -18,7 +18,6 @@ if(empty($_SESSION['manager']))
 
 
 <?php
-	$ad=new ad_update;
 	require 'DOMDocument_createElement_simple.php';
 	$dom=new DOMDocumentCustom;
 	$body=$dom->createElement_simple('body');
