@@ -31,8 +31,7 @@ catch (Exception $e)
     echo $ad->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
 }
 
-
-if($user['manager'][0]!=$_SESSION['manager_dn'])
+if(!$ad->canEdit($user))
     die($ad->render('error.twig', array('error'=>'Du er ikke leder for ansatt', 'title'=>'Feil')));
 
 if(!isset($_GET['field']) || !isset($_GET['user']))

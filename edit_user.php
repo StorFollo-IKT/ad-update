@@ -38,8 +38,7 @@ if(empty($_SESSION['manager']))
 	{
 		$dom->createElement_simple('h2',$body,false,'Endrer '.$user['displayname'][0]);
 
-
-		if($user['manager'][0]!=$_SESSION['manager_dn'])
+		if(!$ad->canEdit($user))
 			$dom->createElement_simple('p',$body,array('class'=>'error'),'Du er ikke leder for ansatt');
 		else
 		{

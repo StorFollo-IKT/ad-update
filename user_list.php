@@ -57,11 +57,13 @@ if(!empty($users))
     echo $ad->render('user_list.twig', array(
         'title'=>$title,
         'ou_list'=>$ou_list,
-        'field_names'=>$ad->field_names));
+        'field_names'=>$ad->field_names,
+        'current_user'=>$_SESSION['current_user']['samaccountname'][0]));
 }
 else
 {
-    if(empty($error))
+    /*if(empty($error))
         $error=sprintf('Ingen brukere er registrert med %s som leder',$manager['displayname'][0]);
-    echo $ad->render('error_logout.twig', array('error'=>$error, 'title'=>'Feil'));
+    echo $ad->render('error.twig', array('error'=>$error, 'title'=>'Feil'));*/
+    header('Location: edit_user.php?user='.$_SESSION['current_user']['samaccountname'][0]);
 }

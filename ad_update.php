@@ -112,4 +112,9 @@ class ad_update extends adtools
             }
         }
     }
+
+    public function canEdit($user)
+    {
+        return $user['manager'][0]==$_SESSION['manager_dn'] || $user['dn']==$_SESSION['current_user']['dn'];
+    }
 }

@@ -12,8 +12,9 @@ if(!empty($_SESSION['token']) && !empty($ad_update->azure->checkToken($_SESSION[
     $_SESSION['token'] = $ad_update->azure->checkToken($_SESSION['token']);
 
     $ad_update->connect('edit');
-    $dn = $ad_update->azure->getLocalUser($_SESSION['token'], ['dn', 'displayName']);
+    $dn = $ad_update->azure->getLocalUser($_SESSION['token'], ['dn', 'displayName', 'samAccountName']);
     $_SESSION['manager'] = $dn;
+    $_SESSION['current_user'] = $dn;
     header('Location: user_list.php');
 }
 else
