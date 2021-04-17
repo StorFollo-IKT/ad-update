@@ -4,53 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d74c97b6bb763881d62fc7ff6089a6de",
+    "content-hash": "c15741c36190db949fcb43f3a19ea710",
     "packages": [
-        {
-            "name": "datagutten/adtools",
-            "version": "v1.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/datagutten/adtools.git",
-                "reference": "5044dfabb9346ac540736da530caf7e7548bba58"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/datagutten/adtools/zipball/5044dfabb9346ac540736da530caf7e7548bba58",
-                "reference": "5044dfabb9346ac540736da530caf7e7548bba58",
-                "shasum": ""
-            },
-            "require": {
-                "ext-gettext": "*",
-                "ext-ldap": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "adtools.php",
-                    "adtools_groups.php",
-                    "adtools_utils.php",
-                    "LdapException.php",
-                    "MultipleHitsException.php",
-                    "NoHitsException.php"
-                ],
-                "files": [
-                    "set_locale.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "datagutten",
-                    "email": "datagutten@datagutten.net"
-                }
-            ],
-            "description": "Tools for working with Active Directory from PHP",
-            "time": "2020-08-31T18:52:54+00:00"
-        },
         {
             "name": "datagutten/logger",
             "version": "v1.2",
@@ -595,6 +550,55 @@
             "time": "2019-03-08T08:55:37+00:00"
         },
         {
+            "name": "storfollo/adtools",
+            "version": "v1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/StorFollo-IKT/adtools.git",
+                "reference": "5044dfabb9346ac540736da530caf7e7548bba58"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/StorFollo-IKT/adtools/zipball/5044dfabb9346ac540736da530caf7e7548bba58",
+                "reference": "5044dfabb9346ac540736da530caf7e7548bba58",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gettext": "*",
+                "ext-ldap": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "adtools.php",
+                    "adtools_groups.php",
+                    "adtools_utils.php",
+                    "LdapException.php",
+                    "MultipleHitsException.php",
+                    "NoHitsException.php"
+                ],
+                "files": [
+                    "set_locale.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "datagutten",
+                    "email": "datagutten@datagutten.net"
+                }
+            ],
+            "description": "Tools for working with Active Directory from PHP",
+            "support": {
+                "issues": "https://github.com/StorFollo-IKT/adtools/issues",
+                "source": "https://github.com/StorFollo-IKT/adtools/tree/v1.4.1"
+            },
+            "time": "2020-08-31T18:52:54+00:00"
+        },
+        {
             "name": "symfony/filesystem",
             "version": "v4.4.12",
             "source": {
@@ -897,5 +901,6 @@
         "ext-ldap": "*",
         "ext-dom": "*"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }

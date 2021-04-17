@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "datagutten/adtools": "^1.4.1",
+        "storfollo/adtools": "^1.4.1",
         "datagutten/logger": "^1.0",
         "thenetworg/oauth2-azure": "^1.4",
         "twig/twig": "^2.7",
