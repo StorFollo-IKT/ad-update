@@ -32,7 +32,7 @@ class ad_update extends adtools
      */
     public $multi_value_fields;
     /**
-     * @var array Fields which should be fethced from A
+     * @var array Fields which should be fetched from AD
      */
     public $fetch_fields;
     /**
