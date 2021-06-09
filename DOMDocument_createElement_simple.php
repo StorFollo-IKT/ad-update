@@ -29,4 +29,3 @@ class DOMDocumentCustom extends DOMDocument
 		return $element;
 	}
 }
-?>

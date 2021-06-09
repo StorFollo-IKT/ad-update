@@ -30,12 +30,13 @@ class azure
     /**
      * @param $token
      * @param string[] $fields
-     * @return array
+     * @return array|string
      * @throws UserNotFoundException
      * @noinspection PhpUnhandledExceptionInspection
      * @noinspection PhpRedundantCatchClauseInspection
      */
-    function getLocalUser($token, $fields = ['dn']) {
+    function getLocalUser($token, $fields = ['dn'])
+    {
         $resourceOwner = $this->provider->getResourceOwner($token);
         $upn = $resourceOwner->getUpn();
         try
@@ -53,7 +54,7 @@ class azure
      * @return AccessToken
      * @throws IdentityProviderException
      */
-    function checkToken(AccessToken $token)
+    function checkToken(AccessToken $token): ?AccessToken
     {
         /*try {
             $this->me($token);
@@ -77,9 +78,11 @@ class azure
 
     /**
      * @param $token
+     * @return string
      * @throws IdentityProviderException
+     * @noinspection PhpDocRedundantThrowsInspection
      */
-    function me($token)
+    function me($token): string
     {
         return $this->provider->get('http://graph.microsoft.com/v1.0/me/messages', $token);
     }

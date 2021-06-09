@@ -89,12 +89,12 @@ class ad_update
     /**
      * Renders a template.
      *
-     * @param string $name    The template name
-     * @param array  $context An array of parameters to pass to the template
+     * @param string $name The template name
+     * @param array $context An array of parameters to pass to the template
      *
      * @return string The rendered template
      */
-    public function render($name, $context)
+    public function render(string $name, array $context): string
     {
         try {
             $context['debug'] = $this->debug;
@@ -121,7 +121,7 @@ class ad_update
         }
     }
 
-    public function canEdit($user)
+    public function canEdit(array $user): bool
     {
         return $user['manager'][0]==$_SESSION['manager_dn'] || $user['dn']==$_SESSION['current_user']['dn'];
     }
