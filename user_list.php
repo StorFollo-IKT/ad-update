@@ -5,6 +5,9 @@
  * Date: 22.02.2019
  * Time: 09:14
  */
+
+use storfollo\adtools;
+
 require 'vendor/autoload.php';
 $ad = new ad_update;
 if(!empty($_SESSION['token']))
@@ -36,6 +39,8 @@ elseif (empty($_SESSION['manager']))
     header('Location: login_azure.php');
     die();
 }
+else
+    $_SESSION['manager'] = $_SESSION['current_user'];
 
 try {
     $manager = $_SESSION['manager'];
@@ -51,9 +56,15 @@ $title = sprintf('Ansatte registrert med %s som leder',$manager['displayname'][0
 try {
     $users = $ad->ad->ldap_query(sprintf('(manager=%s)',$manager['dn']), ['single_result'=>false, 'attributes'=>$ad->fetch_fields]);
 }
-catch (Exception $e)
+catch (adtools\exceptions\NoHitsException $e)
 {
-    $error=$e->getMessage();
+    if($ad->debug)
+    {
+        $error = sprintf('Ingen brukere er registrert med %s som leder', $manager['displayname'][0]);
+        die($ad->render('error.twig', array('error' => $error, 'title' => 'Ingen brukere funnet', 'trace' => $e->getTraceAsString())));
+    }
+    else
+        header('Location: edit_user.php?user=' . $_SESSION['current_user']['samaccountname'][0]);
 }
 
 if(!empty($users))
@@ -82,10 +93,7 @@ if(!empty($users))
 else
 {
     if ($ad->debug)
-    {
-        if (empty($error))
-            $error = sprintf('Ingen brukere er registrert med %s som leder', $manager['displayname'][0]);
-        echo $ad->render('error.twig', array('error' => $error, 'title' => 'Feil', 'trace' => $e->getTraceAsString()));
-    } else
+        echo $ad->render('error.twig', array('error' => 'Ingen brukere funnet', 'title' => 'Feil', 'trace' => null));
+    else
         header('Location: edit_user.php?user=' . $_SESSION['current_user']['samaccountname'][0]);
 }
