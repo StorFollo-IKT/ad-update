@@ -1,6 +1,6 @@
 <?php
 
-use datagutten\ad_update\azure;
+use storfollo\ad_update\azure;
 
 /**
  * Created by PhpStorm.

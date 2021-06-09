@@ -1,7 +1,7 @@
 <?php
 
 
-namespace datagutten\ad_update;
+namespace storfollo\ad_update;
 
 
 use adtools;

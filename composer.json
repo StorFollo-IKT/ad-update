@@ -1,5 +1,5 @@
 {
-    "name": "datagutten/ad-update",
+    "name": "storfollo/ad-update",
     "description": "Website allowing users in Active Directory to update information for users they are registered as manager for",
     "type": "project",
     "license": "GPL-3.0-or-later",
@@ -24,7 +24,7 @@
             "DOMDocument_createElement_simple.php"
         ],
         "psr-4": {
-            "datagutten\\ad_update\\": "src"
+            "storfollo\\ad_update\\": "src"
         }
     }
 }
