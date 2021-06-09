@@ -26,10 +26,25 @@ class azure
         $this->provider->scope = 'openid profile email offline_access ' . $baseGraphUri . '/User.Read';
     }
 
+    /**
+     * @param $token
+     * @param string[] $fields
+     * @return array
+     * @throws UserNotFoundException
+     * @noinspection PhpUnhandledExceptionInspection
+     * @noinspection PhpRedundantCatchClauseInspection
+     */
     function getLocalUser($token, $fields = ['dn']) {
         $resourceOwner = $this->provider->getResourceOwner($token);
         $upn = $resourceOwner->getUpn();
-        return $this->adtools->find_object($upn, false, 'upn', $fields);
+        try
+        {
+            return $this->adtools->find_object($upn, false, 'upn', $fields);
+        }
+        catch (adtools\exceptions\NoHitsException $e)
+        {
+            throw new UserNotFoundException($upn, $e->getCode(), $e);
+        }
     }
 
     /**
