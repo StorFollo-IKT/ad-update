@@ -1,6 +1,9 @@
 <?php
+
+use storfollo\ad_update;
+
 require 'vendor/autoload.php';
-$ad_update = new ad_update();
+$ad_update = new \ad_update();
 if(!empty($_SESSION['token']) && !empty($ad_update->azure->checkToken($_SESSION['token'])))
 {
     if(isset($_GET['logout']))

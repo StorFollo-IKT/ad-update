@@ -1,6 +1,7 @@
 <?php
 
 use storfollo\ad_update\azure;
+use storfollo\adtools\adtools;
 
 /**
  * Created by PhpStorm.
@@ -9,7 +10,7 @@ use storfollo\ad_update\azure;
  * Time: 12:00
  */
 
-class ad_update extends adtools
+class ad_update
 {
     /**
      * @var Twig_Environment
@@ -47,47 +48,38 @@ class ad_update extends adtools
      * @var azure
      */
     public $azure;
+    /**
+     * @var adtools
+     */
+    public $ad;
 
     /**
      * ad_update constructor.
-     * @param string $domain
      */
-    function __construct($domain = null)
+    function __construct()
     {
         session_name('ad-update');
         session_start();
+        $config = require 'config.php';
+
         $loader = new Twig\Loader\FilesystemLoader(array('templates', 'templates'), __DIR__);
         $this->twig = new Twig\Environment($loader, array('strict_variables' => true));
         try {
-            parent::__construct($domain);
+            $this->ad = adtools::connect_config($config['ad']);
             $this->log=new logger('ad-update');
         }
         catch (Exception $e)
         {
             echo $this->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil', 'trace'=>$e->getTraceAsString()));
         }
-        $config = require 'config.php';
+
         $this->field_names = $config['field_names'];
         $this->editable_fields = $config['editable_fields'];
         $this->multi_value_fields = $config['multi_value_fields'];
         $this->global_editors = $config['global_editors'];
         $this->fetch_fields = array_merge(array('manager'), array_keys($this->field_names));
-        $this->azure = new azure($config['azure']);
-        $this->azure->adtools = $this;
-    }
-
-    /**
-     * @param $domain_key
-     */
-    function connect($domain_key)
-    {
-        try {
-            parent::connect($domain_key);
-        }
-        catch (Exception $e)
-        {
-            echo $this->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
-        }
+        $this->azure = new azure($this->ad, $config['azure']);
+        $this->base_url = $config['base_url'];
     }
 
     /**

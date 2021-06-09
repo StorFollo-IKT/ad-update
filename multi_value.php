@@ -6,7 +6,7 @@
  * Time: 12:26
  */
 require 'vendor/autoload.php';
-$ad=new ad_update('edit');
+$ad=new ad_update;
 
 if(isset($_GET['logout']))
     $_SESSION=array();
@@ -23,7 +23,7 @@ else
     $field=$_GET['field'];
 
 try {
-    $user = $ad->ldap_query(sprintf('(samAccountName=%s)',$_GET['user']), array(
+    $user = $ad->ad->ldap_query(sprintf('(samAccountName=%s)',$_GET['user']), array(
         'attributes'=>array('dn','manager', $field)));
 }
 catch (Exception $e)
@@ -56,10 +56,10 @@ if(!empty($_POST))
     }
     $values = array_filter($values);
     if(empty($values))
-        ldap_mod_del($ad->ad, $user['dn'], array($field=>array()));
+        ldap_mod_del($ad->ad->ad, $user['dn'], array($field=>array()));
     else
     {
-        ldap_mod_replace($ad->ad, $user['dn'], array($field=>$values));
+        ldap_mod_replace($ad->ad->ad, $user['dn'], array($field=>$values));
     }
     $user[$field] = $values;
     header('Location: edit_user.php?user='.$_GET['user']);

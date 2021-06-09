@@ -24,8 +24,7 @@ if(empty($_SESSION['manager']))
 	$_GET['user']=preg_replace('/[^a-z0-9\-]/i','',$_GET['user']); //Remove invalid characters from user name
 
     try {
-        $ad->connect('edit');
-        $user=$ad->find_object($_GET['user'],false,'username',$ad->fetch_fields);
+        $user=$ad->ad->find_object($_GET['user'],false,'username',$ad->fetch_fields);
     }
     catch (Exception $e)
     {
@@ -54,12 +53,12 @@ if(empty($_SESSION['manager']))
                         {
                             $ad->log->writelog('Remove '.$field);
                             $logstring_to = '[blank]';
-                            ldap_mod_replace($ad->ad,$user['dn'],array($field=>array())); //Update AD
+                            ldap_mod_replace($ad->ad->ad,$user['dn'],array($field=>array())); //Update AD
                         }
                         else
                         {
                             $logstring_to = $_POST[$field];
-                            ldap_mod_replace($ad->ad,$user['dn'],array($field=>$_POST[$field])); //Update AD
+                            ldap_mod_replace($ad->ad->ad,$user['dn'],array($field=>$_POST[$field])); //Update AD
                         }
 
                         if(empty($_POST['original_'.$field]))

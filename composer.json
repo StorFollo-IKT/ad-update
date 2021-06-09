@@ -10,13 +10,14 @@
         }
     ],
     "require": {
-        "storfollo/adtools": "^1.4.1",
+        "storfollo/adtools": "^3.2",
         "datagutten/logger": "^1.0",
         "thenetworg/oauth2-azure": "^1.4",
         "twig/twig": "^2.7",
         "ext-gettext": "*",
         "ext-ldap": "*",
-        "ext-dom": "*"
+        "ext-dom": "*",
+        "php": ">=7.3"
     },
     "autoload": {
         "classmap": [

@@ -6,7 +6,7 @@
  * Time: 09:14
  */
 require 'vendor/autoload.php';
-$ad = new ad_update('edit');
+$ad = new ad_update;
 if(!empty($_SESSION['token']))
     $token = $ad->azure->checkToken($_SESSION['token']);
 else
@@ -49,7 +49,7 @@ $_SESSION['manager_dn']=$manager['dn'];
 $title = sprintf('Ansatte registrert med %s som leder',$manager['displayname'][0]);
 
 try {
-    $users = $ad->ldap_query(sprintf('(manager=%s)',$manager['dn']), ['single_result'=>false, 'attributes'=>$ad->fetch_fields]);
+    $users = $ad->ad->ldap_query(sprintf('(manager=%s)',$manager['dn']), ['single_result'=>false, 'attributes'=>$ad->fetch_fields]);
 }
 catch (Exception $e)
 {

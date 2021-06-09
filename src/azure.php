@@ -4,7 +4,7 @@
 namespace storfollo\ad_update;
 
 
-use adtools;
+use storfollo\adtools;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessToken;
 
@@ -15,15 +15,16 @@ class azure
      */
     public $provider;
     /**
-     * @var adtools
+     * @var adtools\adtools
      */
     public $adtools;
 
-    function __construct($options = ['clientId'=>'', 'clientSecret'=>'', 'redirectUri'=>''])
+    function __construct(adtools\adtools $adtools, $options = ['clientId'=>'', 'clientSecret'=>'', 'redirectUri'=>''])
     {
         $this->provider = new \TheNetworg\OAuth2\Client\Provider\Azure($options);
         $baseGraphUri = $this->provider->getBaseAuthorizationUrl();
         $this->provider->scope = 'openid profile email offline_access ' . $baseGraphUri . '/User.Read';
+        $this->adtools = $adtools;
     }
 
     /**
@@ -52,7 +53,7 @@ class azure
      * @return AccessToken
      * @throws IdentityProviderException
      */
-    function checkToken($token)
+    function checkToken(AccessToken $token)
     {
         /*try {
             $this->me($token);
