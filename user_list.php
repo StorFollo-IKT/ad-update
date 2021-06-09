@@ -7,23 +7,42 @@
  */
 require 'vendor/autoload.php';
 $ad = new ad_update('edit');
-$token = $ad->azure->checkToken($_SESSION['token']);
-
-if(empty($token) || empty($_SESSION['manager']))
+if(!empty($_SESSION['token']))
+    $token = $ad->azure->checkToken($_SESSION['token']);
+else
 {
     header('Location: login_azure.php');
     die();
 }
 
-if(isset($_GET['manager']))
-    $_SESSION['manager']=$_GET['manager'];
+if (isset($_GET['manager']))
+{
+    $current_user = $ad->azure->getLocalUser($token, ['samAccountName']);
+    if (array_search($current_user, $ad->global_editors) === false)
+        die($ad->render('error.twig', ['title' => 'Ingen tilgang', 'error' => 'Du har ikke tilgang til å endre andres ansatte.', 'trace' => null]));
+
+    try
+    {
+        $manager = $ad->ad->find_object($_GET['manager'], false, 'username', ['displayname', 'dn']);
+        $_SESSION['manager'] = $manager;
+    }
+    catch (Exception $e)
+    {
+        die($ad->render('error.twig', ['title' => 'Leder ikke funnet', 'error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]));
+    }
+}
+elseif (empty($_SESSION['manager']))
+{
+    header('Location: login_azure.php');
+    die();
+}
 
 try {
     $manager = $_SESSION['manager'];
 }
 catch (Exception $e)
 {
-    die($ad->render('error.twig', array('error'=> $e->getMessage())));
+    die($ad->render('error.twig', array('error'=> $e->getMessage(), 'trace'=>$e->getTraceAsString())));
 }
 
 $_SESSION['manager_dn']=$manager['dn'];

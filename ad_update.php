@@ -40,6 +40,10 @@ class ad_update extends adtools
      */
     public $fetch_fields;
     /**
+     * @var array Users allowed to edit any user
+     */
+    public $global_editors = [];
+    /**
      * @var azure
      */
     public $azure;
@@ -66,6 +70,7 @@ class ad_update extends adtools
         $this->field_names = $config['field_names'];
         $this->editable_fields = $config['editable_fields'];
         $this->multi_value_fields = $config['multi_value_fields'];
+        $this->global_editors = $config['global_editors'];
         $this->fetch_fields = array_merge(array('manager'), array_keys($this->field_names));
         $this->azure = new azure($config['azure']);
         $this->azure->adtools = $this;
