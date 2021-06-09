@@ -16,6 +16,10 @@ class ad_update extends adtools
      */
     public $twig;
     /**
+     * @var bool Show trace in errors
+     */
+    public $debug = false;
+    /**
      * @var logger
      */
     public $log;
@@ -56,7 +60,7 @@ class ad_update extends adtools
         }
         catch (Exception $e)
         {
-            echo $this->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil'));
+            echo $this->render('error.twig', array('error'=>$e->getMessage(), 'title'=>'Feil', 'trace'=>$e->getTraceAsString()));
         }
         $config = require 'config.php';
         $this->field_names = $config['field_names'];
@@ -92,6 +96,7 @@ class ad_update extends adtools
     public function render($name, $context)
     {
         try {
+            $context['debug'] = $this->debug;
             return $this->twig->render($name, $context);
         }
         catch (\Twig\Error\Error $e) {
@@ -101,8 +106,10 @@ class ad_update extends adtools
             try {
                 die($this->twig->render('error.twig', array(
                         'title'=>'Rendering error',
-                        'error'=>$msg)
-                ));
+                        'error'=>$msg,
+                        'trace'=>$e->getTraceAsString(),
+                        'debug'=>$this->debug,
+                )));
             }
             catch (\Twig\Error\Error $e_e)
             {

@@ -1,4 +1,7 @@
 {% extends 'base.twig' %}
 {% block content %}
     {{ error }}
+    {% if debug %}
+        <pre>{{ trace }}</pre>
+    {% endif %}
 {% endblock %}

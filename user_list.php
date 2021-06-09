@@ -62,8 +62,11 @@ if(!empty($users))
 }
 else
 {
-    /*if(empty($error))
-        $error=sprintf('Ingen brukere er registrert med %s som leder',$manager['displayname'][0]);
-    echo $ad->render('error.twig', array('error'=>$error, 'title'=>'Feil'));*/
-    header('Location: edit_user.php?user='.$_SESSION['current_user']['samaccountname'][0]);
+    if ($ad->debug)
+    {
+        if (empty($error))
+            $error = sprintf('Ingen brukere er registrert med %s som leder', $manager['displayname'][0]);
+        echo $ad->render('error.twig', array('error' => $error, 'title' => 'Feil', 'trace' => $e->getTraceAsString()));
+    } else
+        header('Location: edit_user.php?user=' . $_SESSION['current_user']['samaccountname'][0]);
 }
