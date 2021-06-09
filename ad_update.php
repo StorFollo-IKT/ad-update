@@ -13,6 +13,10 @@ use storfollo\adtools\adtools;
 class ad_update
 {
     /**
+     * @var string Base URL
+     */
+    public $base_url;
+    /**
      * @var Twig_Environment
      */
     public $twig;

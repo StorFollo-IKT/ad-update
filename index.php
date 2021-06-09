@@ -9,7 +9,7 @@ if(!empty($_SESSION['token']) && !empty($ad_update->azure->checkToken($_SESSION[
     if(isset($_GET['logout']))
     {
         $_SESSION = [];
-        header('Location: ' . $ad_update->azure->provider->getLogoutUrl('https://ad-update.as-admin.no'));
+        header('Location: ' . $ad_update->azure->provider->getLogoutUrl($ad_update->base_url));
         die();
     }
     $_SESSION['token'] = $ad_update->azure->checkToken($_SESSION['token']);
