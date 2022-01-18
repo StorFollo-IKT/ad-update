@@ -70,7 +70,7 @@ class ad_update
         $this->twig = new Twig\Environment($loader, array('strict_variables' => true));
         try {
             $this->ad = adtools::connect_config($config['ad']);
-            $this->log=new logger('ad-update');
+            $this->log=new logger('ad-update', $config['log_path'] ?? '/home/logs');
         }
         catch (Exception $e)
         {
