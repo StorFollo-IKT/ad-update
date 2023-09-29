@@ -110,7 +110,7 @@ if(empty($_SESSION['manager']))
 
 			$dom->createElement_simple('p',$body,false,'Tittel skal være funksjonstittel i henhold til enhetlig navnestandard.');
 			$dom->createElement_simple('p',$body,false,'Lokasjon skal være fysisk lokasjon, fortrinnsvis gateadresse med mindre lokasjonen har et annet kjent navn (skoler og barnehager).');
-			$dom->createElement_simple('p',$body,false,'Hvis bruker kun har mobil må feltet for telefon inneholde ordet "Mobil" for at nummeret skal synes i internkatalogen. Er feltet for telefon tomt får brukeren ingen oppføring i internkatalogen.');
+			//$dom->createElement_simple('p',$body,false,'Hvis bruker kun har mobil må feltet for telefon inneholde ordet "Mobil" for at nummeret skal synes i internkatalogen. Er feltet for telefon tomt får brukeren ingen oppføring i internkatalogen.');
 			$dom->createElement_simple('p',$body,false,'Navn endres i agresso.');
 		}
 	}
